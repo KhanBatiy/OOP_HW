@@ -24,7 +24,7 @@ class Mentor:
             return 'Ошибка'
 
 
-best_student = Student('Ruoy', 'Eman', 'your_gender')
+'''best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python']
 
 cool_mentor = Mentor('Some', 'Buddy')
@@ -34,4 +34,20 @@ cool_mentor.rate_hw(best_student, 'Python', 10)
 cool_mentor.rate_hw(best_student, 'Python', 10)
 cool_mentor.rate_hw(best_student, 'Python', 10)
 
-print(best_student.grades)
+print(best_student.grades)'''
+
+
+class Lecturer(Mentor):
+    pass
+
+
+class Reviewer(Mentor):
+    pass
+
+
+lecturer = Lecturer('Иван', 'Иванов')
+reviewer = Reviewer('Пётр', 'Петров')
+print(isinstance(lecturer, Mentor)) # True
+print(isinstance(reviewer, Mentor)) # True
+print(lecturer.courses_attached)    # []
+print(reviewer.courses_attached)    # []
