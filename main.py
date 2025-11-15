@@ -114,3 +114,113 @@ class Reviewer(Mentor):
 
     def __str__(self):
         return f"Имя: {self.name}\nФамилия: {self.surname}"
+
+
+def estimate_students_hw(students, course):
+    if not students:
+        return 0
+
+    total_grades = []
+    for student in students:
+        if course in student.grades:
+            total_grades.extend(student.grades[course])
+
+    return sum(total_grades) / len(total_grades)
+
+
+def estimate_lecturers(lecturers, course):
+    if not lecturers:
+        return 0
+
+    total_grades = []
+    for lecturer in lecturers:
+        if course in lecturer.lect_grades:
+            total_grades.extend(lecturer.lect_grades[course])
+
+    return sum(total_grades) / len(total_grades)
+
+
+# Студенты
+student1 = Student("Алексей", "Иванов", "male")
+student1.courses_in_progress = ["Python", "Git", "Java"]
+student1.finished_courses = ["Введение в программирование"]
+student2 = Student("Мария", "Петрова", "female")
+student2.courses_in_progress = ["Python", "JavaScript"]
+student2.finished_courses = ["Основы программирования"]
+
+# Лекторы
+lecturer1 = Lecturer("Иван", "Сидоров")
+lecturer1.courses_attached = ["Python", "Git"]
+lecturer2 = Lecturer("Ольга", "Козлова")
+lecturer2.courses_attached = ["Python", "JavaScript", "Java"]
+
+# Ревьюеры
+reviewer1 = Reviewer("Сергей", "Николаев")
+reviewer1.courses_attached = ["Python", "Git"]
+reviewer2 = Reviewer("Анна", "Смирнова")
+reviewer2.courses_attached = ["Python", "JavaScript", "Java"]
+
+reviewer1.rate_hw(student1, "Python", 9)
+reviewer1.rate_hw(student1, "Python", 10)
+reviewer1.rate_hw(student1, "Git", 8)
+reviewer1.rate_hw(student1, "Git", 9)
+reviewer2.rate_hw(student1, "Java", 7)
+reviewer1.rate_hw(student2, "Python", 8)
+reviewer1.rate_hw(student2, "Python", 9)
+reviewer2.rate_hw(student2, "JavaScript", 10)
+
+student1.rate_lecture(lecturer1, "Python", 10)
+student1.rate_lecture(lecturer1, "Git", 9)
+student2.rate_lecture(lecturer1, "Python", 8)
+student1.rate_lecture(lecturer2, "Python", 9)
+student1.rate_lecture(lecturer2, "Java", 8)
+student2.rate_lecture(lecturer2, "Python", 10)
+student2.rate_lecture(lecturer2, "JavaScript", 9)
+
+print("Тестируем некорректные операции:")
+# Курс не прикреплен к проверяющему
+result1 = reviewer1.rate_hw(student1, "JavaScript", 5)
+# Курс не прикреплен к лектору
+result2 = student1.rate_lecture(lecturer1, "Java", 8)
+# Некорректная оценка
+result3 = reviewer1.rate_hw(student1, "Python", 15)
+print(f"Некорректная оценка: {result1}")
+print(f"Некорректная лекция: {result2}")
+print(f"Некорректный диапазон: {result3}\n")
+
+print("Информация о всех участниках:")
+print("СТУДЕНТЫ:")
+print(student1)
+print()
+print(student2)
+print("\nЛЕКТОРЫ:")
+print(lecturer1)
+print()
+print(lecturer2)
+print("\nРЕВЬЮЕРЫ:")
+print(reviewer1)
+print()
+print(reviewer2)
+
+print("\nСравнение объектов:")
+print()
+print(f"student1 > student2: {student1 > student2}")
+print(f"student1 < student2: {student1 < student2}")
+print(f"student1 == student2: {student1 == student2}")
+print(f"lecturer1 > lecturer2: {lecturer1 > lecturer2}")
+print(f"lecturer1 < lecturer2: {lecturer1 < lecturer2}")
+print(f"lecturer1 == lecturer2: {lecturer1 == lecturer2}")
+
+# Используем функции для подсчета средних оценок по курсам
+print("\nСредние оценки по курсам:")
+students_list = [student1, student2]
+lecturers_list = [lecturer1, lecturer2]
+courses_to_check = ["Python", "Git", "Java", "JavaScript"]
+
+for course in courses_to_check:
+    student_avg = estimate_students_hw(students_list, course)
+    lecturer_avg = estimate_lecturers(lecturers_list, course)
+
+    print(f"\nКурс: {course}")
+    print(f"  Средняя оценка студентов: {student_avg:.1f}")
+    print(f"  Средняя оценка лекторов:  {lecturer_avg:.1f}")
